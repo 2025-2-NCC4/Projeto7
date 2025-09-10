@@ -37,8 +37,6 @@ Projeto 7
 
 <b>executáveis</b>: Binários e executáveis do projeto.
 
-<b>imagens</b>: Imagens do sistema
-
 <b>src</b>: Pasta que contém o código fonte.
 
 
