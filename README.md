@@ -27,7 +27,6 @@ Projeto 7
     &emsp;&emsp;|-->Contabilidade e Finanças<br>
     &emsp;&emsp;|-->Engenharia de Software e Arquitetura de Sistemas<br>
   &emsp;|-->Entrega 2<br>
-  &emsp;|-->Entrega 3<br>
 |-->src<br>
     &emsp;&emsp;|-->Backend<br>
     &emsp;&emsp;|-->Frontend<br>
