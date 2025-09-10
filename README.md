@@ -7,7 +7,7 @@ Projeto 7
 </p>
 
 
-## Integrantes:  <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a> <a href="https://github.com/ThiagoAkira0">Thiago Mitami</a>
+## Integrantes:  <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Mitami</a>
 
 
 ## Professores Orientadores:
@@ -54,10 +54,4 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 ## 🎓 Referências
 
 Aqui estão as referências usadas no projeto.
-
-
-[Getting started with Retrofit | android studio | java](https://www.youtube.com/watch?v=lz5lPAdA3fQ)
-
-[Configurando o Node como ambiente de desenvolvimento](https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/development_environment)
-
 
