@@ -1,12 +1,12 @@
 # Projeto 7
-## Grupo L3OT
+### Grupo L3OT
 # FECAP - Fundação Escola de Comércio Álvares Penteado
 
 <p align="center">
 <a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
 </p>
 
-## <p>PicMoney - Dashboard</p>
+### <p>PicMoney - Dashboard</p>
 
 
 ## Integrantes:  <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>,  <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
@@ -53,19 +53,18 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 -<a href="https://www.nodejs.tech/pt-br/download" >Node.js</a><br>
 -<a href="https://flask.palletsprojects.com/en/stable/installation/">Flask</a><br>
 
-## Abra o terminal e acesse a pasta do frontend
+### Abra o terminal e acesse a pasta do frontend
 cd src, cd frontend
 
-## Instale as dependências JavaScript
+### Instale as dependências JavaScript
 npm install
 
-## Execute a aplicação React
+### Execute a aplicação React
 npm start
 
 
 ## 📋 Licença/License
 <p>
-    PicMoneyPROJECT  © 2025 by Leonardo Santos da Silva, Lucas Silva Maciel, Lucas de Lima Gutierrez, Otavio Vecchi Zeferino, Thiago Akira Higa Mitami is licensed under CC BY 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/
 
 </p>
 
