@@ -7,7 +7,7 @@ Projeto 7
 </p>
 
 
-## Integrantes:  <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez </a>, <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
+## Integrantes:  <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>, <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
 
 
 ## Professores Orientadores:
