@@ -74,5 +74,11 @@ npm start
 
 ## 🎓 Referências
 
-Aqui estão as referências usadas no projeto.
+<ul>
+  <li>Dados fornecidos pela PicMoney </li>
+  <li><a href= "https://pt-br.react.dev/">React Documentation</a></li>
+  <li><a href= "https://flask.palletsprojects.com/en/stable/">Flask Documentation</a></li>
+  <li><a href="https://www.sqlite.org/docs.html">SQLite Documentation</a></li>
+</ul>
+
 
