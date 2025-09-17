@@ -53,7 +53,8 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 
 
 ## 📋 Licença/License
-<a href="https://creativecommons.org">PicMoneyPROJECT</a> © 2025 by <a href="https://creativecommons.org">Leonardo Santos da Silva, Lucas Silva Maciel, Lucas de Lima Gutierrez, Otavio Vecchi Zeferino, Thiago Akira Higa Mitami</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1px;max-height:1px;margin-left: .1px;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1px;max-height:1px;margin-left: .2px;">
+<p><a href="https://creativecommons.org">PicMoneyPROJECT</a> © 2025 by <a href="https://creativecommons.org">Leonardo Santos da Silva, Lucas Silva Maciel, Lucas de Lima Gutierrez, Otavio Vecchi Zeferino, Thiago Akira Higa Mitami</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt=""style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1px;max-height:1px;margin-left: .2px;">
+</p>
 
 ## 🎓 Referências
 
