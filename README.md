@@ -47,7 +47,7 @@ Projeto 7
 
 Para abrir este projeto você necessita das seguintes ferramentas:
 
--<a href="https://code.visualstudio.com/">Visual Studio Code</a>
+-<a href="https://code.visualstudio.com/">Visual Studio Code</a><br>
 -<a href="https://www.nodejs.tech/pt-br/download" >Node.js</a><br>
 -<a href="https://flask.palletsprojects.com/en/stable/installation/">Flask</a><br>
 
