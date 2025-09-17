@@ -65,7 +65,11 @@ npm start
 
 ## 📋 Licença/License
 <p>
-<a href="https://creativecommons.org">PicMoneyPROJECT</a> © 2025 by <a href="https://creativecommons.org">Leonardo Santos da Silva, Lucas Silva Maciel, Lucas de Lima Gutierrez, Otavio Vecchi Zeferino, Thiago Akira Higa Mitami</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+<a href="https://creativecommons.org">PicMoneyPROJECT</a> © 2025 by 
+  <a href="https://creativecommons.org">Leonardo Santos da Silva, Lucas Silva Maciel, Lucas de Lima Gutierrez, Otavio Vecchi Zeferino, Thiago Akira Higa Mitami</a> is licensed under 
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC License" width: 16px; height: 16px; margin-left: 4px; vertical-align: middle;">
+  <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY Attribution" style="width: 16px; height: 16px; margin-left: 4px; vertical-align: middle;">
 </p>
 
 ## 🎓 Referências
