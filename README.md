@@ -10,7 +10,7 @@ Projeto 7
 ## Integrantes:  <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>,  <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
 
 
-## Professores Orientadores:
+## Professores Orientadores: <a href="https://www.linkedin.com/in/eduardo-savino/?originalSubdomain=br">Prof.Eduardo Savino Gomes</a>, <a href="https://www.linkedin.com/in/lucymari/?originalSubdomain=br">ProfªLucy Mari Tabuti</a>, <a href="https://www.linkedin.com/in/mauricio-lopes-da-cunha-5630492a/?originalSubdomain=br">Prof.Mauricio Lopes da Cunha</a>, <a href="https://www.researchgate.net/profile/Rodnil-Lisboa-2">Prof.Rodnil da Silva Moreira Lisboa</a>, 
 
 ## Descrição
 Dashboard interativo para a plataforma PicMoney, desenvolvido para fornecer insights estratégicos em tempo real para os departamentos de CEO e CFO da empresa. A plataforma oferece visualizações interativas de KPIs financeiros e operacionais, permitindo tomada de decisão baseada em dados.
@@ -50,6 +50,15 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 -<a href="https://code.visualstudio.com/">Visual Studio Code</a><br>
 -<a href="https://www.nodejs.tech/pt-br/download" >Node.js</a><br>
 -<a href="https://flask.palletsprojects.com/en/stable/installation/">Flask</a><br>
+
+# Abra o terminal e acesse a pasta do frontend
+cd src, cd frontend
+
+# Instale as dependências JavaScript
+npm install
+
+# Execute a aplicação React
+npm start
 
 
 ## 📋 Licença/License
