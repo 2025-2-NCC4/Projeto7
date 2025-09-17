@@ -27,6 +27,10 @@ Projeto 7
     &emsp;&emsp;|-->Engenharia de Software e Arquitetura de Sistemas<br>
     &emsp;&emsp;|-->Projeto Interdisciplinar: Ciência de Dados<br>
   &emsp;|-->Entrega 2<br>
+    &emsp;&emsp;|-->Análise Inferencial de Dados<br>
+    &emsp;&emsp;|-->Contabilidade e Finanças<br>
+    &emsp;&emsp;|-->Engenharia de Software e Arquitetura de Sistemas<br>
+    &emsp;&emsp;|-->Projeto Interdisciplinar: Ciência de Dados<br>
 |-->src<br>
     &emsp;&emsp;|-->Backend<br>
     &emsp;&emsp;|-->Frontend<br>
