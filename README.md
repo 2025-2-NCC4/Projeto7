@@ -1,12 +1,12 @@
 # Projeto 7
-Grupo L3OT
+# Grupo L3OT
 # FECAP - Fundação Escola de Comércio Álvares Penteado
 
 <p align="center">
 <a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
 </p>
 
-<p>PicMoney - Dashboard</p>
+# <p>PicMoney - Dashboard</p>
 
 
 ## Integrantes:  <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>,  <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
