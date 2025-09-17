@@ -6,10 +6,10 @@
 <a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
 </p>
 
-### <p>PicMoney - Dashboard</p>
+## <p>PicMoney - Dashboard</p>
 
 
-## Integrantes:  <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>,  <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
+## Integrantes:  <a href="https://github.com/Leonardoss23">Leonardo Santos da Silva</a>, <a href="https://github.com/oGubo"> Lucas de Lima Gutierrez</a>, <a href="https://github.com/LucasSilvaMaciel">Lucas Silva Maciel</a>, <a href="https://github.com/OtavioVecchi">Otavio Vecchi Zeferino</a>, <a href="https://github.com/ThiagoAkira0">Thiago Akira Higa Mitami</a>
 
 
 ## Professores Orientadores: <a href="https://www.linkedin.com/in/eduardo-savino/?originalSubdomain=br">Prof. Eduardo Savino Gomes</a>, <a href="https://www.linkedin.com/in/lucymari/?originalSubdomain=br">Profª Lucy Mari Tabuti</a>, <a href="https://www.linkedin.com/in/mauricio-lopes-da-cunha-5630492a/?originalSubdomain=br">Prof. Mauricio Lopes da Cunha</a>, <a href="https://www.researchgate.net/profile/Rodnil-Lisboa-2">Prof. Rodnil da Silva Moreira Lisboa</a>, 
