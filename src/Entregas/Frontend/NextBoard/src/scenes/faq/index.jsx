@@ -12,70 +12,65 @@ const FAQ = () => {
   const colors = tokens(theme.palette.mode);
   return (
     <Box m="20px">
-      <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
+      <Header title="Perguntas Frequentes" subtitle="Respostas Rápidas para Decisões Inteligentes: Seu Guia Prático do Nextboard" />
 
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            An Important Question
+            1. Quais tipos de indicadores financeiros estão disponíveis no dashboard?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+Nosso dashboard oferece indicadores financeiros completos incluindo faturamento total, repasses para parceiros, quantidade de cupons vendidos e gasto médio por cupom. Todos os valores são atualizados em tempo real e apresentados em Reais (R$), com percentuais de crescimento para facilitar a análise de performance.
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Another Important Question
+            2. Como posso visualizar as vendas por região geográfica?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Na seção "Vendas por bairro" do dashboard, você encontra um mapa georreferenciado que mostra a distribuição das vendas por localidade. Essa visualização ajuda a identificar áreas de maior concentração de cupons e oportunidades para expansão em regiões menos atendidas.
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Your Favorite Question
+            3. O dashboard permite filtrar dados por período específico?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Sim! Nosso sistema possui filtros dinâmicos que permitem analisar dados por períodos personalizados (diário, semanal, mensal ou trimestral), além de filtros por região, campanha específica e parceiro comercial. Esses filtros estão disponíveis no topo de cada seção do dashboard.
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            Some Random Question
+4. Como é a experiência de navegação e usabilidade do dashboard?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+Desenvolvemos o dashboard com foco total na usabilidade para executivos. A interface é intuitiva, com menu lateral de acesso rápido, visualização em cards organizados por prioridade e design responsivo que se adapta a desktops, tablets e smartphones. As cores foram cuidadosamente escolhidas para melhor contraste visual e os gráficos interativos permitem detalhamento com um clique.
           </Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            The Final Question
+            5. Posso exportar relatórios personalizados do dashboard?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+ Sim, utilizando o botão "Download Reports" no canto superior direito do dashboard, você pode exportar relatórios completos em formato PDF ou Excel, contendo todos os dados e gráficos visualizados na tela, perfeitos para apresentações executivas ou análises detalhadas.
           </Typography>
         </AccordionDetails>
       </Accordion>

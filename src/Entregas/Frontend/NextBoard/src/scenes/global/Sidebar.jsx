@@ -45,7 +45,7 @@ const Sidebar = () => {
     <Box
       sx={{
         "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
+          background: `${colors.primary[700]} !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -54,10 +54,10 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
+          color: `${colors.yellowAccent[500]} !important`,
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          color: `${colors.greenAccent[500]} !important`,
         },
       }}
     >
@@ -79,11 +79,11 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                <Typography variant="h3" color={colors.yellowAccent[500]}>
+                  NEXTBOARD
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
+                  <MenuOutlinedIcon sx={{ color: colors.grey[100] }} />
                 </IconButton>
               </Box>
             )}
@@ -97,7 +97,7 @@ const Sidebar = () => {
                   width="100px"
                   height="100px"
                   src={`../../assets/user.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                  style={{ cursor: "pointer", borderRadius: "50%", border: `3px solid ${colors.greenAccent[500]}` }}
                 />
               </Box>
               <Box textAlign="center">
@@ -107,10 +107,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  CEO / CFO
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                <Typography variant="h5" color={colors.yellowAccent[500]}>
+                  Pic Money Admin
                 </Typography>
               </Box>
             </Box>
@@ -127,7 +127,7 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.yellowAccent[500]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Data
@@ -156,27 +156,27 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.yellowAccent[500]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Pages
+              Geral
             </Typography>
             <Item
-              title="Profile Form"
+              title="Alterar Dados"
               to="/form"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Calendar"
+              title="Calendário"
               to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="FAQ Page"
+              title="Perguntas Frequentes"
               to="/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
@@ -185,34 +185,34 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[300]}
+              color={colors.yellowAccent[500]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Charts
+              Gráficos 
             </Typography>
             <Item
-              title="Bar Chart"
+              title="Gráfico de Barras"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Pie Chart"
+              title="Gráfico de Pizza"
               to="/pie"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Line Chart"
+              title="Gráfico de Linhas"
               to="/line"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Geography Chart"
+              title="Gráfico Geográfico"
               to="/geography"
               icon={<MapOutlinedIcon />}
               selected={selected}
