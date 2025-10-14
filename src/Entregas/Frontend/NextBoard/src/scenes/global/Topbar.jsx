@@ -1,5 +1,6 @@
 import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -13,6 +14,21 @@ const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/Login");
+  };
+
+  const handleSettingsClick = () => {
+    navigate("/faq");
+    // Quando criar a página de configurações, mude para: navigate("/settings");
+  };
+
+  const handleNotificationsClick = () => {
+    // Quando criar a página de notificações, use: navigate("/notifications");
+    console.log("Notificações clicadas - Página em desenvolvimento");
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -30,6 +46,7 @@ const Topbar = () => {
 
       {/* ICONS */}
       <Box display="flex">
+        {/* Botão Dark/Light Mode */}
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
@@ -37,13 +54,19 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        
+        {/* Botão de Notificações */}
+        <IconButton onClick={handleNotificationsClick}>
           <NotificationsOutlinedIcon />
         </IconButton>
-        <IconButton>
+        
+        {/* Botão de Configurações */}
+        <IconButton onClick={handleSettingsClick}>
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
+        
+        {/* Botão de Perfil */}
+        <IconButton onClick={handleProfileClick}>
           <PersonOutlinedIcon />
         </IconButton>
       </Box>
