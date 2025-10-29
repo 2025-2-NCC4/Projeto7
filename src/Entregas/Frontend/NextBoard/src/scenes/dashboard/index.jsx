@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
@@ -16,6 +17,22 @@ import ProgressCircle from "../../components/ProgressCircle";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [dados, setDados] = useState(null);
+
+  //requisição para buscar os cálculos
+  //este é só um teste. da pra calcular varios indicadores em uma só rota
+  useEffect(() => {
+    fetch("http://127.0.0.1:5001/ticket_medio")
+      .then((res) => res.json())
+      .then((data) => setDados(data))
+      .catch((err) => console.error("Erro ao buscar dados:", err));
+  }, []);
+
+  const formatarMoeda = (valor) =>
+    valor
+      ? valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+      : "Carregando...";
 
   return (
     <Box m="20px">
@@ -119,8 +136,8 @@ const Dashboard = () => {
           borderRadius="20px" 
         >
           <StatBox
-            title="R$539,12"
-            subtitle="Gasto médio por cupom"
+            title={formatarMoeda(dados?.ticket_medio)}
+            subtitle="Ticket médio "
             progress="0.80"
             increase="+45%"
             icon={
