@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
@@ -13,15 +13,16 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import html2canvas from "html2canvas";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [dados, setDados] = useState(null);
+  const rootRef = useRef(null); // ref para capturar o DOM do dashboard
 
-  //requisição para buscar os cálculos
-  //este é só um teste. da pra calcular varios indicadores em uma só rota
+  // requisição para buscar os cálculos
   useEffect(() => {
     fetch("http://127.0.0.1:5001/ticket_medio")
       .then((res) => res.json())
@@ -34,27 +35,65 @@ const Dashboard = () => {
       ? valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
       : "Carregando...";
 
+  // função que tira screenshot e baixa como PNG
+  const handleDownload = async () => {
+    if (!rootRef.current) {
+      console.error("Elemento root não encontrado para captura.");
+      return;
+    }
+
+    try {
+      // aumenta scale para maior resolução da imagem
+      const canvas = await html2canvas(rootRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+      });
+
+      // converte para blob e força download
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `dashboard-${Date.now()}.png`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+        } else {
+          console.error("Falha ao gerar blob do canvas");
+        }
+      }, "image/png");
+    } catch (error) {
+      console.error("Erro ao gerar screenshot:", error);
+    }
+  };
+
   return (
-    <Box m="20px">
+    <Box m="20px" ref={rootRef}>
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" />
-        
+
         <Box>
           <Button
+            onClick={handleDownload}
             sx={{
               backgroundColor: colors.blueAccent[500],
               color: colors.grey[100],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: colors.blueAccent[600],
-              }
+              },
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
+            Baixar Relatório
           </Button>
         </Box>
       </Box>
@@ -73,7 +112,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius="20px" 
+          borderRadius="20px"
         >
           <StatBox
             title="R$123.152,12"
@@ -93,7 +132,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius="20px" 
+          borderRadius="20px"
         >
           <StatBox
             title="R$47.793,84"
@@ -113,7 +152,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius="20px" 
+          borderRadius="20px"
         >
           <StatBox
             title="6.510"
@@ -133,7 +172,7 @@ const Dashboard = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius="20px" 
+          borderRadius="20px"
         >
           <StatBox
             title={formatarMoeda(dados?.ticket_medio)}
@@ -153,7 +192,7 @@ const Dashboard = () => {
           gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
-          borderRadius="20px"   
+          borderRadius="20px"
         >
           <Box
             mt="25px"
@@ -163,18 +202,10 @@ const Dashboard = () => {
             alignItems="center"
           >
             <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
+              <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
                 Categorias mais vendidas
               </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
+              <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
                 R$59.342,32
               </Typography>
             </Box>
@@ -195,7 +226,7 @@ const Dashboard = () => {
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
           overflow="auto"
-          borderRadius="20px"   
+          borderRadius="20px"
         >
           <Box
             display="flex"
@@ -219,11 +250,7 @@ const Dashboard = () => {
               p="15px"
             >
               <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
+                <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600">
                   {transaction.txId}
                 </Typography>
                 <Typography color={colors.grey[100]}>
@@ -255,18 +282,9 @@ const Dashboard = () => {
           <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
             Distribuição por tipo de cupom
           </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
+          <Box display="flex" flexDirection="column" alignItems="center" mt="25px">
             <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
+            <Typography variant="h5" color={colors.greenAccent[500]} sx={{ mt: "15px" }}>
               R$48.352,00 receita gerada
             </Typography>
             <Typography color={colors.grey[100]}>
@@ -278,14 +296,9 @@ const Dashboard = () => {
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
-          borderRadius="20px" 
+          borderRadius="20px"
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-            color={colors.grey[100]}
-          >
+          <Typography variant="h5" fontWeight="600" sx={{ padding: "30px 30px 0 30px" }} color={colors.grey[100]}>
             Líderes em vendas
           </Typography>
           <Box height="250px" mt="-20px">
@@ -299,12 +312,7 @@ const Dashboard = () => {
           padding="30px"
           borderRadius="20px"
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-            color={colors.grey[100]}
-          >
+          <Typography variant="h5" fontWeight="600" sx={{ marginBottom: "15px" }} color={colors.grey[100]}>
             Vendas por bairro
           </Typography>
           <Box height="200px">

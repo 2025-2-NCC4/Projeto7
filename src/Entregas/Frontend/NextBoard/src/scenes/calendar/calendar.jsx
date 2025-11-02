@@ -1,4 +1,5 @@
-import { useState } from "react";
+// src/scenes/calendar/calendar.jsx
+import { useState, useEffect } from "react";
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -14,51 +15,90 @@ import {
 } from "@mui/material";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
+import { auth, db } from "../auth/firebase";
+import { collection, addDoc, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 
 const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [currentEvents, setCurrentEvents] = useState([]);
 
-  const handleDateClick = (selected) => {
-    const title = prompt("Please enter a new title for your event");
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) return;
+
+    const eventsRef = collection(db, "users", user.uid, "events");
+
+    const unsubscribe = onSnapshot(eventsRef, (snapshot) => {
+      const events = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        start: doc.data().start.toDate(),
+        end: doc.data().end.toDate(),
+      }));
+      setCurrentEvents(events);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleDateClick = async (selected) => {
+    const title = prompt("Digite o título do novo evento:");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
+    if (title && user) {
+      const eventData = {
         title,
-        start: selected.startStr,
-        end: selected.endStr,
+        start: selected.start,
+        end: selected.end,
         allDay: selected.allDay,
-      });
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "users", user.uid, "events"), eventData);
+        calendarApi.addEvent({
+          id: docRef.id,
+          ...eventData,
+        });
+      } catch (err) {
+        console.error("Erro ao salvar evento:", err);
+      }
     }
   };
 
-  const handleEventClick = (selected) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
+  const handleEventClick = async (selected) => {
+    if (window.confirm(`Tem certeza que deseja deletar o evento '${selected.event.title}'?`)) {
+      const eventId = selected.event.id;
       selected.event.remove();
+
+      if (user) {
+        try {
+          await deleteDoc(doc(db, "users", user.uid, "events", eventId));
+        } catch (err) {
+          console.error("Erro ao deletar evento:", err);
+        }
+      }
     }
   };
 
   return (
-    <Box m="20px">
-      <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+    <Box m="20px" p="20px" backgroundColor={colors.primary[400]} borderRadius="8px">
+      <Header
+        title="Calendário"
+        subtitle="Escreva um de seus afazeres em algum dia do nosso calendário para ficar salvo"
+      />
 
-      <Box display="flex" justifyContent="space-between">
-        {/* CALENDAR SIDEBAR */}
+      <Box display="flex" justifyContent="space-between" mt="20px">
+        {/* LISTA DE EVENTOS */}
         <Box
           flex="1 1 20%"
-          backgroundColor={colors.primary[400]}
-          p="15px"
-          borderRadius="4px"
+          backgroundColor={colors.primary[500]}
+          p="20px"
+          borderRadius="8px"
         >
-          <Typography variant="h5">Events</Typography>
+          <Typography variant="h5">Eventos</Typography>
           <List>
             {currentEvents.map((event) => (
               <ListItem
@@ -66,7 +106,7 @@ const Calendar = () => {
                 sx={{
                   backgroundColor: colors.greenAccent[500],
                   margin: "10px 0",
-                  borderRadius: "2px",
+                  borderRadius: "4px",
                 }}
               >
                 <ListItemText
@@ -86,16 +126,17 @@ const Calendar = () => {
           </List>
         </Box>
 
-        {/* CALENDAR */}
-        <Box flex="1 1 100%" ml="15px">
+        {/* CALENDÁRIO */}
+        <Box
+          flex="1 1 100%"
+          ml="20px"
+          p="20px"
+          backgroundColor={colors.primary[500]}
+          borderRadius="8px"
+        >
           <FullCalendar
             height="75vh"
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              listPlugin,
-            ]}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
             headerToolbar={{
               left: "prev,next today",
               center: "title",
@@ -108,19 +149,13 @@ const Calendar = () => {
             dayMaxEvents={true}
             select={handleDateClick}
             eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              {
-                id: "12315",
-                title: "All-day event",
-                date: "2022-09-14",
-              },
-              {
-                id: "5123",
-                title: "Timed event",
-                date: "2022-09-28",
-              },
-            ]}
+            events={currentEvents.map((event) => ({
+              id: event.id,
+              title: event.title,
+              start: event.start,
+              end: event.end,
+              allDay: event.allDay,
+            }))}
           />
         </Box>
       </Box>

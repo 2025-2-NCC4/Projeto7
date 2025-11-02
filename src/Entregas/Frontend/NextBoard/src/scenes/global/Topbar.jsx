@@ -55,20 +55,7 @@ const Topbar = () => {
           )}
         </IconButton>
         
-        {/* Botão de Notificações */}
-        <IconButton onClick={handleNotificationsClick}>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        
-        {/* Botão de Configurações */}
-        <IconButton onClick={handleSettingsClick}>
-          <SettingsOutlinedIcon />
-        </IconButton>
-        
-        {/* Botão de Perfil */}
-        <IconButton onClick={handleProfileClick}>
-          <PersonOutlinedIcon />
-        </IconButton>
+       
       </Box>
     </Box>
   );
