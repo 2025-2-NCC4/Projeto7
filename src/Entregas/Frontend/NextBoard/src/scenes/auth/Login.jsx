@@ -9,6 +9,8 @@ import {
   browserSessionPersistence
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ function Login() {
   // Redireciona se o usuário já estiver logado
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) navigate("/"); // Dashboard
+ // Dashboard
     });
     return () => unsubscribe();
   }, [navigate]);
@@ -42,8 +44,30 @@ function Login() {
     try {
       // Define persistência de login
       await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
       navigate("/"); // redireciona para Dashboard
+
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      const cargo = userData.cargo;
+      console.log("Dados do usuário:", userData);
+      console.log("Cargo:", cargo);
+      //Redireciona conforme o cargo
+      if (cargo === "ceo" || cargo ==="CEO") {
+        navigate("/tela-ceo");
+      } else if (cargo === "cfo"|| cargo ==="CFO") {
+        navigate("/tela-cfo");
+      } else {
+          // Se não tiver cargo definido, vai para dashboard padrão
+          navigate("/");
+        }
+    } else {
+      setErrorMessage("Dados do usuário não encontrados.");
+    }
     } catch (error) {
       setErrorMessage("Email ou senha incorretos.");
       console.log(error);

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
+import DashboardCEO from "./scenes/tela-ceo";
+import DashboardCFO from "./scenes/tela-cfo";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
@@ -20,19 +22,41 @@ import PrivateRoute from "./scenes/auth/PrivateRoute";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./scenes/auth/firebase";
+import { auth, db } from "./scenes/auth/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null); // 'ceo' ou 'cfo'
   const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        
+        // Buscar o cargo do usuário no Firestore
+        try {
+          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUserRole(userData.cargo?.toLowerCase() || 'ceo');
+          } else {
+            setUserRole('ceo');
+          }
+        } catch (error) {
+          console.error("Erro ao buscar cargo:", error);
+          setUserRole('ceo');
+        }
+      } else {
+        setUser(null);
+        setUserRole(null);
+      }
       setLoadingUser(false);
     });
+    
     return () => unsubscribe();
   }, []);
 
@@ -75,6 +99,18 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
 
+              {/* Rota Principal - Redireciona baseado no cargo */}
+          <Route path="/" element={
+          <PrivateRoute>
+              {userRole === 'ceo' ? (
+            <DashboardCEO />
+                ) : userRole === 'cfo' ? (
+                <DashboardCFO />
+                ) : (
+      <div>Carregando ou cargo não reconhecido...</div>
+    )}
+  </PrivateRoute>
+} />
               {/* Rotas Privadas */}
               <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
               <Route path="/team" element={<PrivateRoute><Team /></PrivateRoute>} />
@@ -87,6 +123,8 @@ function App() {
               <Route path="/faq" element={<PrivateRoute><FAQ /></PrivateRoute>} />
               <Route path="/calendar" element={<PrivateRoute><Calendar /></PrivateRoute>} />
               <Route path="/geography" element={<PrivateRoute><Geography /></PrivateRoute>} />
+              <Route path="/tela-ceo" element={<PrivateRoute><DashboardCEO /></PrivateRoute>} />
+              <Route path="/tela-cfo" element={<PrivateRoute><DashboardCFO /></PrivateRoute>} />
 
               {/* Redirecionamento default */}
               <Route path="*" element={user ? <Dashboard /> : <Login />} />
