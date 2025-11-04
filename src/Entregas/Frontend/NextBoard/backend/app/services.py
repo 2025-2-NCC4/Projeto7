@@ -12,13 +12,185 @@ def listar_simulador():
 def listar_teste():
     return query_db("SELECT * FROM teste")
 
-# Calcular ticket médio
-def calcular_ticket_medio():
+def top_categorias():
+    query_top_categorias = """
+    SELECT 
+        categoria_estabelecimento as categoria,
+        SUM(valor_cupom) as receita_total,
+        COUNT(*) as total_vendas
+    FROM transacoes 
+    WHERE categoria_estabelecimento IS NOT NULL 
+      AND categoria_estabelecimento != ''
+    GROUP BY categoria_estabelecimento
+    ORDER BY receita_total DESC
+    LIMIT 10
+    """
+    categorias = query_db(query_top_categorias)
+    return categorias 
+
+def calcular_metricas_financeiras():
     query = """
-        SELECT 
-            AVG(valor_cupom) AS ticket_medio
+        SELECT
+            AVG(valor_cupom) AS ticket_medio,
+            SUM(valor_cupom) AS receita_total_picmoney,
+            SUM(repasse_picmoney) AS repasse_total_picmoney,
+            SUM(valor_cupom - repasse_picmoney) AS receita_liquida
         FROM transacoes
         WHERE valor_cupom IS NOT NULL
     """
-    resultado = query_db(query)
-    return resultado[0] if resultado else {"ticket_medio": 0}
+    geral = query_db(query)[0]
+
+    query_por_tipo = """
+        SELECT 
+            tipo_cupom,
+            AVG(valor_cupom) AS valor_medio
+        FROM transacoes
+        WHERE valor_cupom IS NOT NULL
+        GROUP BY tipo_cupom
+    """
+    por_tipo = query_db(query_por_tipo)
+    categorias = top_categorias()
+
+    # Converter em dicionário estruturado
+    resultado = {
+        "ticket_medio": geral["ticket_medio"],
+        "receita_total_picmoney": geral["receita_total_picmoney"],
+        "repasse_total_picmoney": geral["repasse_total_picmoney"],
+        "receita_liquida": geral["receita_liquida"],
+        "valor_medio_por_tipo": {r["tipo_cupom"]: r["valor_medio"] for r in por_tipo},
+        "top_categorias": categorias,
+        "receita_total_geral": sum(item['receita_total'] for item in categorias),
+    }
+    return resultado
+
+
+def calcular_metricas_ceo():
+    query_total_transacoes = "SELECT COUNT(*) AS total_transacoes FROM transacoes"
+    query_top_estabelecimento = """
+        SELECT nome_estabelecimento, COUNT(*) AS total
+        FROM transacoes
+        GROUP BY nome_estabelecimento
+        ORDER BY total DESC
+        LIMIT 1
+    """
+    # Usuários únicos (ativos)
+    query_usuarios_unicos = """
+        SELECT COUNT(DISTINCT celular) AS usuarios_ativos
+        FROM transacoes
+        WHERE celular IS NOT NULL
+          AND celular != ''
+    """
+
+    query_categoria_lucrativa = """
+        SELECT 
+            categoria_estabelecimento as categoria,
+            SUM(valor_cupom) as receita_total
+        FROM transacoes 
+        WHERE categoria_estabelecimento IS NOT NULL 
+          AND categoria_estabelecimento != ''
+        GROUP BY categoria_estabelecimento
+        ORDER BY receita_total DESC
+        LIMIT 1
+    """
+
+        #Evolução Diária de Receita
+    query_evolucao_diaria = """
+SELECT 
+    STRFTIME('%Y-%m-%d', 
+        SUBSTR(data, 7, 4) || '-' || SUBSTR(data, 4, 2) || '-' || SUBSTR(data, 1, 2)
+    ) AS dia,
+    SUM(valor_cupom) AS receita_diaria,
+    COUNT(*) AS transacoes_diarias
+FROM transacoes
+WHERE STRFTIME('%Y-%m-%d', 
+        SUBSTR(data, 7, 4) || '-' || SUBSTR(data, 4, 2) || '-' || SUBSTR(data, 1, 2)
+    ) BETWEEN '2025-07-01' AND '2025-07-31'
+GROUP BY dia
+ORDER BY dia;
+    """
+
+    query_market_share = """
+        SELECT 
+            nome_estabelecimento,
+            COUNT(*) as total_transacoes,
+            (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transacoes)) as percentual
+        FROM transacoes
+        WHERE nome_estabelecimento IS NOT NULL 
+          AND nome_estabelecimento != ''
+        GROUP BY nome_estabelecimento
+        ORDER BY total_transacoes DESC
+        LIMIT 5
+    """
+    
+    query_transacoes_periodo = """
+        SELECT 
+            CASE 
+                WHEN CAST(SUBSTR(hora, 1, 2) AS INTEGER) BETWEEN 6 AND 11 THEN 'Manhã (6h-12h)'
+                WHEN CAST(SUBSTR(hora, 1, 2) AS INTEGER) BETWEEN 12 AND 17 THEN 'Tarde (12h-18h)'
+                WHEN CAST(SUBSTR(hora, 1, 2) AS INTEGER) BETWEEN 18 AND 23 THEN 'Noite (18h-24h)'
+                ELSE 'Madrugada (0h-6h)'
+            END as periodo,
+            COUNT(*) as total_transacoes,
+            SUM(valor_cupom) as receita_total
+        FROM transacoes
+        WHERE hora IS NOT NULL
+        GROUP BY periodo
+        ORDER BY 
+            CASE periodo
+                WHEN 'Madrugada (0h-6h)' THEN 1
+                WHEN 'Manhã (6h-12h)' THEN 2
+                WHEN 'Tarde (12h-18h)' THEN 3
+                WHEN 'Noite (18h-24h)' THEN 4
+            END
+    """
+    query_top_bairros = """
+        SELECT 
+            bairro_estabelecimento as bairro,
+            COUNT(*) as total_transacoes,
+            SUM(valor_cupom) as receita_total
+        FROM transacoes
+        WHERE bairro_estabelecimento IS NOT NULL 
+          AND bairro_estabelecimento != ''
+        GROUP BY bairro_estabelecimento
+        ORDER BY total_transacoes DESC
+        LIMIT 8
+    """
+
+    query_top_tickets = """
+        SELECT 
+            nome_estabelecimento,
+            AVG(valor_cupom) as ticket_medio,
+            COUNT(*) as total_transacoes,
+            SUM(valor_cupom) as receita_total
+        FROM transacoes
+        WHERE nome_estabelecimento IS NOT NULL 
+          AND nome_estabelecimento != ''
+          AND valor_cupom IS NOT NULL
+        GROUP BY nome_estabelecimento
+        HAVING COUNT(*) >= 3  -- Mínimo de transações para ser relevante
+        ORDER BY ticket_medio DESC
+        LIMIT 3
+    """
+    top_tickets = query_db(query_top_tickets)
+    top_bairros = query_db(query_top_bairros)
+    transacoes_por_periodo = query_db(query_transacoes_periodo)
+    market_share = query_db(query_market_share)
+    total_transacoes = query_db(query_total_transacoes)[0]["total_transacoes"]
+    top_estab = query_db(query_top_estabelecimento)[0]
+    usuarios_ativos = query_db(query_usuarios_unicos)[0]["usuarios_ativos"]
+    categoria_lucrativa = query_db(query_categoria_lucrativa)[0]
+    evolucao_diaria = query_db(query_evolucao_diaria)
+
+    return {
+        "total_transacoes": total_transacoes,
+        "usuarios_ativos": usuarios_ativos,
+        "top_estabelecimento": top_estab["nome_estabelecimento"],
+        "categoria_mais_lucrativa": categoria_lucrativa["categoria"],
+        "total_do_top": top_estab["total"],
+        "evolucao_receita": evolucao_diaria,
+        "market_share": market_share,
+        "transacoes_por_periodo": transacoes_por_periodo,
+        "top_bairros": top_bairros,
+        "top_tickets": top_tickets
+    }
+

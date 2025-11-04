@@ -136,7 +136,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
             <Item title="Gráfico de Barras" to="/bar" icon={<BarChartOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Gráfico de Pizza" to="/pie" icon={<PieChartOutlineOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Gráfico de Linhas" to="/line" icon={<TimelineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Item title="Gráfico Geográfico" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} />
+            <Item title="Gráfico de Área" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} />
           </Box>
         </Menu>
       </ProSidebar>

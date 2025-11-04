@@ -24,7 +24,7 @@ const DashboardCFO = () => {
 
   // requisição para buscar os cálculos
   useEffect(() => {
-    fetch("http://127.0.0.1:5001/ticket_medio")
+    fetch("http://127.0.0.1:5001/metricas_financeiras")
       .then((res) => res.json())
       .then((data) => setDados(data))
       .catch((err) => console.error("Erro ao buscar dados:", err));
@@ -115,10 +115,10 @@ const DashboardCFO = () => {
           borderRadius="20px"
         >
           <StatBox
-            title="R$123.152,12"
-            subtitle="Faturamento cfo"
+            title={formatarMoeda(dados?.receita_total_picmoney)}
+            subtitle="Receita total"
             progress="0.50"
-            increase="+21%"
+            // increase="+21%"
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
@@ -135,7 +135,7 @@ const DashboardCFO = () => {
           borderRadius="20px"
         >
           <StatBox
-            title="R$47.793,84"
+            title={formatarMoeda(dados?.repasse_total_picmoney)}
             subtitle="Repasse total"
             progress="0.75"
             increase="+21%"
@@ -155,8 +155,8 @@ const DashboardCFO = () => {
           borderRadius="20px"
         >
           <StatBox
-            title="6.510"
-            subtitle="Total de cupons vendidos"
+            title={formatarMoeda(dados?.receita_liquida)}
+            subtitle="Receita Líquida"
             progress="0.30"
             increase="+5%"
             icon={
@@ -201,6 +201,7 @@ const DashboardCFO = () => {
             justifyContent="space-between"
             alignItems="center"
           >
+ 
             <Box>
               <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
                 Categorias mais vendidas
@@ -232,13 +233,16 @@ const DashboardCFO = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[700]}`}
+            // borderBottom={`4px solid ${colors.primary[700]}`}
             colors={colors.grey[100]}
             p="15px"
-          >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Últimos cupons vendidos
+          > 
+          </Box>
+
+            {/* {<Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Receita Média por Cupom
             </Typography>
+          </Box>
           </Box>
           {mockTransactions.map((transaction, i) => (
             <Box
@@ -269,8 +273,66 @@ const DashboardCFO = () => {
               </Box>
             </Box>
           ))}
-        </Box>
+          </Box> */}
 
+<Box display="flex" flexDirection="column" width="100%">
+  <Typography
+    color={colors.grey[100]}
+    variant="h4"
+    fontWeight="600"
+    sx={{ mb: 1, p: "12px" }} 
+  >
+    Valor médio por cupom
+  </Typography>
+
+  {dados && dados.valor_medio_por_tipo ? (
+    Object.entries(dados.valor_medio_por_tipo).map(([tipo, valor], i) => (
+      <Box
+        key={`${tipo}-${i}`}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        p="10px 15px" 
+        sx={{ 
+          borderBottom: `1px solid ${colors.primary[400]}`,
+          mb: "8px" 
+        }}
+      >
+        <Typography
+          color={colors.greenAccent[500]}
+          variant="h4"
+          fontWeight="600"
+        >
+          {tipo}
+        </Typography>
+
+        <Box
+          sx={{
+            backgroundColor: colors.greenAccent[500],
+            p: "8px 16px", 
+            borderRadius: "4px",
+            color: colors.primary[900],
+            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: "120px",
+          }}
+        >
+          <Typography variant="h4" fontWeight="bold">
+            {formatarMoeda(valor)}
+          </Typography>
+        </Box>
+      </Box>
+    ))
+  ) : (
+    <Typography color={colors.grey[300]} p="20px">
+      Carregando dados...
+    </Typography>
+  )}
+</Box>
+</Box>
         {/* ROW 3 */}
         <Box
           gridColumn="span 4"
