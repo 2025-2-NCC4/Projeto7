@@ -25,7 +25,7 @@ const PieChartMargem = ({ data, colors }) => {
     labels: data.map(item => item.tipo_cupom),
     datasets: [
       {
-        data: data.map(item => item.receita_picmoney),
+        data: data.map(item => item.receita_bruta),
         backgroundColor: [
           colors.greenAccent[500],
           colors.blueAccent[500],
@@ -58,11 +58,22 @@ const PieChartMargem = ({ data, colors }) => {
             const value = context.raw || 0;
             const item = data.find(d => d.tipo_cupom === label);
             const transacoes = item ? item.total_transacoes : 0;
+            const margem = item ? item.margem_percentual : 0;
+            
+            // FORMATAR VALORES
+            const formatarMoeda = (valor) => {
+              return valor.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+              });
+            };
             
             return [
               `${label}`,
-              `Receita: R$ ${value.toFixed(2)}`,
-              `Transações: ${transacoes}`
+              `Receita Bruta: ${formatarMoeda(value)}`,
+              `Transações: ${transacoes.toLocaleString('pt-BR')}`,
+              `Margem: ${margem.toFixed(1)}%`
             ];
           }
         }

@@ -1,116 +1,3 @@
-// import { ResponsivePie } from "@nivo/pie";
-// import { tokens } from "../theme";
-// import { useTheme } from "@mui/material";
-// import { mockPieData as data } from "../data/mockData";
-
-// const PieChart = () => {
-//   const theme = useTheme();
-//   const colors = tokens(theme.palette.mode);
-//   return (
-//     <ResponsivePie
-//       data={data}
-//       theme={{
-//         axis: {
-//           domain: {
-//             line: {
-//               stroke: colors.grey[100],
-//             },
-//           },
-//           legend: {
-//             text: {
-//               fill: colors.grey[100],
-//             },
-//           },
-//           ticks: {
-//             line: {
-//               stroke: colors.grey[100],
-//               strokeWidth: 1,
-//             },
-//             text: {
-//               fill: colors.grey[100],
-//             },
-//           },
-//         },
-//         legends: {
-//           text: {
-//             fill: colors.grey[100],
-//           },
-//         },
-//       }}
-//       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-//       innerRadius={0.5}
-//       padAngle={0.7}
-//       cornerRadius={3}
-//       activeOuterRadiusOffset={8}
-//       borderColor={{
-//         from: "color",
-//         modifiers: [["darker", 0.2]],
-//       }}
-//       arcLinkLabelsSkipAngle={10}
-//       arcLinkLabelsTextColor={colors.grey[100]}
-//       arcLinkLabelsThickness={2}
-//       arcLinkLabelsColor={{ from: "color" }}
-//       enableArcLabels={false}
-//       arcLabelsRadiusOffset={0.4}
-//       arcLabelsSkipAngle={7}
-//       arcLabelsTextColor={{
-//         from: "color",
-//         modifiers: [["darker", 2]],
-//       }}
-//       defs={[
-//         {
-//           id: "dots",
-//           type: "patternDots",
-//           background: "inherit",
-//           color: "rgba(255, 255, 255, 0.3)",
-//           size: 4,
-//           padding: 1,
-//           stagger: true,
-//         },
-//         {
-//           id: "lines",
-//           type: "patternLines",
-//           background: "inherit",
-//           color: "rgba(255, 255, 255, 0.3)",
-//           rotation: -45,
-//           lineWidth: 6,
-//           spacing: 10,
-//         },
-//       ]}
-//       legends={[
-//         {
-//           anchor: "bottom",
-//           direction: "row",
-//           justify: false,
-//           translateX: 0,
-//           translateY: 56,
-//           itemsSpacing: 0,
-//           itemWidth: 100,
-//           itemHeight: 18,
-//           itemTextColor: "#999",
-//           itemDirection: "left-to-right",
-//           itemOpacity: 1,
-//           symbolSize: 18,
-//           symbolShape: "circle",
-//           effects: [
-//             {
-//               on: "hover",
-//               style: {
-//                 itemTextColor: "#000",
-//               },
-//             },
-//           ],
-//         },
-//       ]}
-//     />
-//   );
-// };
-
-// export default PieChart;
-
-
-// components/PieChart.js
-// components/PieChart.js
 import React from 'react';
 import {
   Chart as ChartJS,
@@ -122,7 +9,7 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChartComponent = ({ data, colors }) => {
+const PieChartComponent = ({ data, colors, totalGeral = 100000 }) => {
   if (!data || data.length === 0) {
     return (
       <div style={{ 
@@ -138,16 +25,15 @@ const PieChartComponent = ({ data, colors }) => {
   }
 
   // Cores padrão seguras
-const defaultColors = {
-  green: '#2E8B57',    // Sea Green - mais escuro
-  blue: '#4169E1',     // Royal Blue - mais escuro  
-  yellow: '#DAA520',   // Goldenrod - mais sóbrio
-  purple: '#6A5ACD',   // Slate Blue - mais escuro
-  orange: '#CD853F',   // Peru - tom terroso
-  text: '#FFFFFF',
-  grid: '#424242'
-};
-
+  const defaultColors = {
+    green: '#2E8B57',
+    blue: '#4169E1', 
+    yellow: '#DAA520',
+    purple: '#6A5ACD',
+    orange: '#CD853F',
+    text: '#FFFFFF',
+    grid: '#424242'
+  };
 
   // Usa cores padrão se colors for undefined
   const safeColors = colors ? {
@@ -196,8 +82,8 @@ const defaultColors = {
           label: function(context) {
             const label = context.label || '';
             const value = context.parsed;
-            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
+            // Agora usa o totalGeral em vez do total do dataset
+            const percentage = ((value / totalGeral) * 100).toFixed(1);
             return `${label}: ${value} transações (${percentage}%)`;
           }
         }

@@ -51,20 +51,18 @@ def calcular_metricas_financeiras():
 
     ##Top 10 Estabelecimentos por Receita
     query_top10_receita = """
-        SELECT 
-            nome_estabelecimento,
-            SUM(valor_cupom) as receita_total,
-            SUM(repasse_picmoney) as repasse_total,
-            SUM(valor_cupom - repasse_picmoney) as receita_liquida,
-            COUNT(*) as total_transacoes,
-            AVG(valor_cupom) as ticket_medio,
-            (SUM(valor_cupom - repasse_picmoney) / SUM(valor_cupom)) * 100 as margem_percentual
-        FROM transacoes
-        WHERE nome_estabelecimento IS NOT NULL 
-          AND nome_estabelecimento != ''
-        GROUP BY nome_estabelecimento
-        ORDER BY receita_total DESC
-        LIMIT 10
+    SELECT 
+        nome_estabelecimento,
+        SUM(valor_cupom) as receita_total,
+        COUNT(*) as total_transacoes,
+        AVG(valor_cupom) as ticket_medio,
+        (SUM(repasse_picmoney) / SUM(valor_cupom)) * 100 as margem_percentual 
+    FROM transacoes
+    WHERE nome_estabelecimento IS NOT NULL 
+      AND nome_estabelecimento != ''
+    GROUP BY nome_estabelecimento
+    ORDER BY receita_total DESC
+    LIMIT 10
     """
 
     ##Margem por Tipo de Cupom
@@ -132,12 +130,42 @@ def calcular_metricas_financeiras():
     END
 """
 
+##Ticket Médio por Tipo de Loja (da tabela teste)
+    query_ticket_medio_tipo_loja = """
+        SELECT 
+            tipo_loja,
+            COUNT(*) as total_transacoes,
+            AVG(valor_compra) as ticket_medio_compra,
+            AVG(valor_cupom) as valor_pago_medio,
+            SUM(valor_compra) as volume_total
+        FROM teste
+        WHERE tipo_loja IS NOT NULL 
+          AND tipo_loja != ''
+          AND valor_compra > 0
+        GROUP BY tipo_loja
+        ORDER BY ticket_medio_compra DESC
+        LIMIT 6
+    """
+
+    query = """
+        SELECT
+            AVG(valor_cupom) AS ticket_medio,
+            SUM(valor_cupom) AS receita_total_picmoney,
+            SUM(repasse_picmoney) AS repasse_total_picmoney,
+            SUM(valor_cupom - repasse_picmoney) AS receita_liquida,
+            (SUM(repasse_picmoney) / SUM(valor_cupom)) * 100 AS margem_lucro_percentual
+        FROM transacoes
+        WHERE valor_cupom IS NOT NULL
+    """
+    geral = query_db(query)[0]
+
     receita_dia_semana = query_db(query_receita_dia_semana)
     evolucao_mensal = query_db(query_evolucao_mensal)
     top10_receita = query_db(query_top10_receita)
     por_tipo = query_db(query_por_tipo)
     categorias = top_categorias()
     margem_tipo_cupom = query_db(query_margem_tipo_cupom)
+    ticket_medio_tipo_loja = query_db(query_ticket_medio_tipo_loja)
 
     # Converter em dicionário estruturado
     resultado = {
@@ -145,13 +173,15 @@ def calcular_metricas_financeiras():
         "receita_total_picmoney": geral["receita_total_picmoney"],
         "repasse_total_picmoney": geral["repasse_total_picmoney"],
         "receita_liquida": geral["receita_liquida"],
+        "margem_lucro_percentual": geral["margem_lucro_percentual"],
         "valor_medio_por_tipo": {r["tipo_cupom"]: r["valor_medio"] for r in por_tipo},
         "top_categorias": categorias,
         "receita_total_geral": sum(item['receita_total'] for item in categorias),
         "top10_receita": top10_receita,
         "margem_tipo_cupom": margem_tipo_cupom,
         "evolucao_mensal": evolucao_mensal,
-        "receita_dia_semana": receita_dia_semana  
+        "receita_dia_semana": receita_dia_semana,
+        "ticket_medio_tipo_loja": ticket_medio_tipo_loja
     }
     return resultado
 

@@ -125,6 +125,7 @@ function App() {
               <Route path="/geography" element={<PrivateRoute><Geography /></PrivateRoute>} />
               <Route path="/tela-ceo" element={<PrivateRoute><DashboardCEO /></PrivateRoute>} />
               <Route path="/tela-cfo" element={<PrivateRoute><DashboardCFO /></PrivateRoute>} />
+              
 
               {/* Redirecionamento default */}
               <Route path="*" element={user ? <Dashboard /> : <Login />} />

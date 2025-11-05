@@ -132,11 +132,11 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
             <Item title="Perfil" to="/form" icon={<PersonOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Calendário" to="/calendar" icon={<CalendarTodayOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Perguntas Frequentes" to="/faq" icon={<HelpOutlineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Typography variant="h6" color={colors.yellowAccent[500]} sx={{ m: "15px 0 5px 20px" }}>Gráficos</Typography>
+            {/* <Typography variant="h6" color={colors.yellowAccent[500]} sx={{ m: "15px 0 5px 20px" }}>Gráficos</Typography>
             <Item title="Gráfico de Barras" to="/bar" icon={<BarChartOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Gráfico de Pizza" to="/pie" icon={<PieChartOutlineOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Gráfico de Linhas" to="/line" icon={<TimelineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Item title="Gráfico de Área" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} />
+            <Item title="Gráfico de Área" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} /> */}
           </Box>
         </Menu>
       </ProSidebar>

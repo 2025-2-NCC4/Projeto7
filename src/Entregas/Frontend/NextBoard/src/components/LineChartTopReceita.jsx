@@ -10,7 +10,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';  // ✅ CORRIGIDO
 
 ChartJS.register(
   CategoryScale,
@@ -69,8 +69,8 @@ const LineChartTopReceita = ({ data, colors }) => {
         pointRadius: 4,
       },
       {
-        label: 'Lucro Líquido',
-        data: sortedData.map(item => item.receita_liquida),
+        label: 'Lucro PicMoney',
+        data: sortedData.map(item => item.lucro_picmoney),
         borderColor: safeColors.lucro,
         backgroundColor: safeColors.lucro + '40',
         tension: 0.4,

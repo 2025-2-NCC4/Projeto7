@@ -7,9 +7,13 @@ import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Header from "../../components/Header";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import LineChartTopReceita from "../../components/LineChartTopReceita";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PieChartMargem from "../../components/PieChartMargem";
+import AreaChartTicketMedio from "../../components/AreaChartTicketMedio";
 import LineChartEvolucao from "../../components/LineChartEvolucao";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
@@ -38,6 +42,11 @@ const DashboardCFO = () => {
     valor
       ? valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
       : "Carregando...";
+
+  const formatarPercentual = (valor) => {
+    if (valor === null || valor === undefined) return "Carregando...";
+    return `${valor.toFixed(1)}%`;
+  };
 
   // função que tira screenshot e baixa como PNG
   const handleDownload = async () => {
@@ -144,13 +153,35 @@ const DashboardCFO = () => {
             progress="0.75"
             increase="+21%"
             icon={
-              <EmailIcon
+              <AttachMoneyIcon
                 sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
               />
             }
           />
         </Box>
+
         <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[600]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="20px"
+        >
+          <StatBox
+            title={formatarPercentual(dados?.margem_lucro_percentual)}
+            subtitle="Margem de Lucro"
+            progress="0.30"
+            increase="+5%"
+            icon={
+              <TrendingUpIcon
+                sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+
+        {/* <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[600]}
           display="flex"
@@ -169,7 +200,7 @@ const DashboardCFO = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[600]}
@@ -184,9 +215,7 @@ const DashboardCFO = () => {
             progress="0.80"
             increase="+45%"
             icon={
-              <TrafficIcon
-                sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
-              />
+              <ShoppingCartIcon sx={{ color: colors.yellowAccent[500], fontSize: "26px" }} />
             }
           />
         </Box>
@@ -194,53 +223,6 @@ const DashboardCFO = () => {
         {/* ROW 2 */}
 
         <Box
-  gridColumn="span 8"
-  gridRow="span 2"
-  backgroundColor={colors.primary[600]}
-  borderRadius="20px"
->
-  <Box
-    mt="25px"
-    p="0 30px"
-    display="flex"
-    justifyContent="space-between"
-    alignItems="center"
-  >
-    <Box>
-      <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
-        Ranking - Estabelecimentos com maior faturamento
-      </Typography>
-      {/* <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
-        {formatarMoeda(dados?.top10_receita?.[0]?.receita_total)}
-      </Typography> */}
-    </Box>
-    <Box>
-      <IconButton>
-        <DownloadOutlinedIcon
-          sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-        />
-      </IconButton>
-    </Box>
-  </Box>
-  
-  <Box height="250px" m="-10px 20px 0 20px">
-    {dados?.top10_receita && dados.top10_receita.length > 0 ? (
-      <LineChartTopReceita 
-        data={dados.top10_receita}
-        colors={colors}
-      />
-    ) : (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-        <Typography color={colors.grey[300]}>
-          {dados?.top10_receita ? 'Nenhum dado disponível' : 'Carregando dados...'}
-        </Typography>
-      </Box>
-    )}
-  </Box>
-</Box>
-
-        {/* CÓDIGO ANTIGO (ROW 2 CATEGORIAS MAIS VENDIDAS) */}
-        {/* <Box
           gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
@@ -249,17 +231,13 @@ const DashboardCFO = () => {
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
- 
             <Box>
-              <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
-                Categorias mais vendidas
-              </Typography>
-              <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
-                R$59.342,32
+              <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
+                Ranking - Estabelecimentos com maior faturamento
               </Typography>
             </Box>
             <Box>
@@ -270,11 +248,22 @@ const DashboardCFO = () => {
               </IconButton>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-             <LineChart isDashboard={true} /> 
+
+          <Box height="250px" m="-10px 20px 0 20px">
+            {dados?.top10_receita && dados.top10_receita.length > 0 ? (
+              <LineChartTopReceita
+                data={dados.top10_receita}
+                colors={colors}
+              />
+            ) : (
+              <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                <Typography color={colors.grey[300]}>
+                  {dados?.top10_receita ? 'Nenhum dado disponível' : 'Carregando dados...'}
+                </Typography>
+              </Box>
+            )}
           </Box>
-        </Box> */}
-            {/* TERMINA AQUI */}
+        </Box>
 
         <Box
           gridColumn="span 4"
@@ -287,198 +276,127 @@ const DashboardCFO = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            // borderBottom={`4px solid ${colors.primary[700]}`}
             colors={colors.grey[100]}
             p="15px"
-          > 
+          >
           </Box>
 
-            {/* {<Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Receita Média por Cupom
-            </Typography>
-          </Box>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[700]}`}
-              p="15px"
+
+
+          <Box display="flex" flexDirection="column" width="100%">
+            <Typography
+              color={colors.grey[100]}
+              variant="h4"
+              fontWeight="600"
+              sx={{ mb: 1, p: "12px" }}
             >
-              <Box>
-                <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600">
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-                color={colors.primary[900]}
-                fontWeight="bold"
-              >
-                R${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-          </Box> */}
+              Valor médio por cupom
+            </Typography>
 
-<Box display="flex" flexDirection="column" width="100%">
-  <Typography
-    color={colors.grey[100]}
-    variant="h4"
-    fontWeight="600"
-    sx={{ mb: 1, p: "12px" }} 
-  >
-    Valor médio por cupom
-  </Typography>
+            {dados && dados.valor_medio_por_tipo ? (
+              Object.entries(dados.valor_medio_por_tipo).map(([tipo, valor], i) => (
+                <Box
+                  key={`${tipo}-${i}`}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  width="100%"
+                  p="8px 15px"
+                  sx={{
+                    borderBottom: `1px solid ${colors.primary[400]}`,
+                    mb: "8px"
+                  }}
+                >
+                  <Typography
+                    color={colors.greenAccent[500]}
+                    variant="h4"
+                    fontWeight="600"
+                  >
+                    {tipo}
+                  </Typography>
 
-  {dados && dados.valor_medio_por_tipo ? (
-    Object.entries(dados.valor_medio_por_tipo).map(([tipo, valor], i) => (
-      <Box
-        key={`${tipo}-${i}`}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        width="100%"
-        p="8px 15px" 
-        sx={{ 
-          borderBottom: `1px solid ${colors.primary[400]}`,
-          mb: "8px" 
-        }}
-      >
-        <Typography
-          color={colors.greenAccent[500]}
-          variant="h4"
-          fontWeight="600"
-        >
-          {tipo}
-        </Typography>
-
-        <Box
-          sx={{
-            backgroundColor: colors.greenAccent[500],
-            p: "8px 16px", 
-            borderRadius: "4px",
-            color: colors.primary[900],
-            fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minWidth: "120px",
-          }}
-        >
-          <Typography variant="h4" fontWeight="bold">
-            {formatarMoeda(valor)}
-          </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: colors.greenAccent[500],
+                      p: "8px 16px",
+                      borderRadius: "4px",
+                      color: colors.primary[900],
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      minWidth: "120px",
+                    }}
+                  >
+                    <Typography variant="h5" fontWeight="bold">
+                      {formatarMoeda(valor)}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))
+            ) : (
+              <Typography color={colors.grey[300]} p="20px">
+                Carregando dados...
+              </Typography>
+            )}
+          </Box>
         </Box>
-      </Box>
-    ))
-  ) : (
-    <Typography color={colors.grey[300]} p="20px">
-      Carregando dados...
-    </Typography>
-  )}
-</Box>
-</Box>
         {/* ROW 3 */}
 
-  <Box
-  gridColumn="span 4"
-  gridRow="span 2"
-  backgroundColor={colors.primary[600]}
-  p="12px"
-  borderRadius="20px"
->
-  <Typography variant="h5" fontWeight="600" color={colors.grey[100]} sx={{ mb: 2 }}>
-    Receita por Tipo de Cupom
-  </Typography>
-  <PieChartMargem data={dados?.margem_tipo_cupom} colors={colors} />
-</Box>
-
-        {/* codigo antigo aqui */}
-        {/* <Box
+        <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
-          p="30px"
+          p="12px"
           borderRadius="20px"
         >
-          <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
-            Distribuição por tipo de cupom
+          <Typography variant="h5" fontWeight="600" color={colors.grey[100]} sx={{ mb: 2 }}>
+            Receita por Tipo de Cupom
           </Typography>
-          <Box display="flex" flexDirection="column" alignItems="center" mt="25px">
-            <ProgressCircle size="125" />
-            <Typography variant="h5" color={colors.greenAccent[500]} sx={{ mt: "15px" }}>
-              R$48.352,00 receita gerada
-            </Typography>
-            <Typography color={colors.grey[100]}>
-              Inclui despesas e custos diversos
-            </Typography>
-          </Box>
-        </Box> */}
-        
+          <PieChartMargem data={dados?.margem_tipo_cupom} colors={colors} />
+        </Box>
 
-        {/* termina aqui */}
-
-        {/* codigo veio */}
-
-{/* 
         <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
           borderRadius="20px"
         >
-          <Typography variant="h5" fontWeight="600" sx={{ padding: "30px 30px 0 30px" }} color={colors.grey[100]}>
-            Líderes em vendas
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "20px 20px 0 20px" }}
+            color={colors.grey[100]}
+          >
+            Receita por Dia da Semana
           </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+          <Box height="200px" mt="35px" p="0 15px">
+            <BarChartDiaSemana
+              data={dados?.receita_dia_semana}
+              colors={colors}
+            />
           </Box>
-        </Box> */}
-        {/* termina aqui */}
-
-<Box
-  gridColumn="span 4"
-  gridRow="span 2"
-  backgroundColor={colors.primary[600]}
-  borderRadius="20px"
->
-  <Typography 
-    variant="h5" 
-    fontWeight="600" 
-    sx={{ padding: "20px 20px 0 20px" }} 
-    color={colors.grey[100]}
-  >
-    Receita por Dia da Semana
-  </Typography>
-  <Box height="200px" mt="35px" p="0 15px">
-    <BarChartDiaSemana 
-      data={dados?.receita_dia_semana} 
-      colors={colors} 
-    />
-  </Box>
-</Box>
+        </Box>
 
         <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
-          padding="30px"
           borderRadius="20px"
         >
-          <Typography variant="h5" fontWeight="600" sx={{ marginBottom: "15px" }} color={colors.grey[100]}>
-            Vendas por bairro
+          <Typography
+            variant="h6"
+            fontWeight="600"
+            sx={{ padding: "20px 15px 10px 15px" }}
+            color={colors.grey[100]}
+          >
+            Ticket Médio por Categoria
           </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
+          <Box height="180px" p="0 10px">
+            <AreaChartTicketMedio
+              data={dados?.ticket_medio_tipo_loja}
+              colors={colors}
+            />
           </Box>
         </Box>
       </Box>
