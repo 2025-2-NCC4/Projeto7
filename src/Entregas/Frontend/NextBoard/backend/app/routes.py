@@ -5,7 +5,7 @@ bp = Blueprint('routes', __name__)
 
 @bp.route('/')
 def index():
-    metricas = services.calcular_metricas_financeiras()  # 🔹 CORREÇÃO: chamar uma vez só
+    metricas = services.calcular_metricas_financeiras()  
     categorias = services.top_categorias()
 
 

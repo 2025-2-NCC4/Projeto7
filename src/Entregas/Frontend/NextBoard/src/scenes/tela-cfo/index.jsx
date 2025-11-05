@@ -8,8 +8,12 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
+import LineChartTopReceita from "../../components/LineChartTopReceita";
+import PieChartMargem from "../../components/PieChartMargem";
+import LineChartEvolucao from "../../components/LineChartEvolucao";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
+import BarChartDiaSemana from "../../components/BarChartDiaSemana";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
@@ -188,7 +192,55 @@ const DashboardCFO = () => {
         </Box>
 
         {/* ROW 2 */}
+
         <Box
+  gridColumn="span 8"
+  gridRow="span 2"
+  backgroundColor={colors.primary[600]}
+  borderRadius="20px"
+>
+  <Box
+    mt="25px"
+    p="0 30px"
+    display="flex"
+    justifyContent="space-between"
+    alignItems="center"
+  >
+    <Box>
+      <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
+        Ranking - Estabelecimentos com maior faturamento
+      </Typography>
+      {/* <Typography variant="h3" fontWeight="bold" color={colors.greenAccent[500]}>
+        {formatarMoeda(dados?.top10_receita?.[0]?.receita_total)}
+      </Typography> */}
+    </Box>
+    <Box>
+      <IconButton>
+        <DownloadOutlinedIcon
+          sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+        />
+      </IconButton>
+    </Box>
+  </Box>
+  
+  <Box height="250px" m="-10px 20px 0 20px">
+    {dados?.top10_receita && dados.top10_receita.length > 0 ? (
+      <LineChartTopReceita 
+        data={dados.top10_receita}
+        colors={colors}
+      />
+    ) : (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Typography color={colors.grey[300]}>
+          {dados?.top10_receita ? 'Nenhum dado disponível' : 'Carregando dados...'}
+        </Typography>
+      </Box>
+    )}
+  </Box>
+</Box>
+
+        {/* CÓDIGO ANTIGO (ROW 2 CATEGORIAS MAIS VENDIDAS) */}
+        {/* <Box
           gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
@@ -219,9 +271,11 @@ const DashboardCFO = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+             <LineChart isDashboard={true} /> 
           </Box>
-        </Box>
+        </Box> */}
+            {/* TERMINA AQUI */}
+
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -293,7 +347,7 @@ const DashboardCFO = () => {
         justifyContent="space-between"
         alignItems="center"
         width="100%"
-        p="10px 15px" 
+        p="8px 15px" 
         sx={{ 
           borderBottom: `1px solid ${colors.primary[400]}`,
           mb: "8px" 
@@ -334,7 +388,22 @@ const DashboardCFO = () => {
 </Box>
 </Box>
         {/* ROW 3 */}
-        <Box
+
+  <Box
+  gridColumn="span 4"
+  gridRow="span 2"
+  backgroundColor={colors.primary[600]}
+  p="12px"
+  borderRadius="20px"
+>
+  <Typography variant="h5" fontWeight="600" color={colors.grey[100]} sx={{ mb: 2 }}>
+    Receita por Tipo de Cupom
+  </Typography>
+  <PieChartMargem data={dados?.margem_tipo_cupom} colors={colors} />
+</Box>
+
+        {/* codigo antigo aqui */}
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
@@ -353,7 +422,14 @@ const DashboardCFO = () => {
               Inclui despesas e custos diversos
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
+        
+
+        {/* termina aqui */}
+
+        {/* codigo veio */}
+
+{/* 
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -366,7 +442,31 @@ const DashboardCFO = () => {
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
           </Box>
-        </Box>
+        </Box> */}
+        {/* termina aqui */}
+
+<Box
+  gridColumn="span 4"
+  gridRow="span 2"
+  backgroundColor={colors.primary[600]}
+  borderRadius="20px"
+>
+  <Typography 
+    variant="h5" 
+    fontWeight="600" 
+    sx={{ padding: "20px 20px 0 20px" }} 
+    color={colors.grey[100]}
+  >
+    Receita por Dia da Semana
+  </Typography>
+  <Box height="200px" mt="35px" p="0 15px">
+    <BarChartDiaSemana 
+      data={dados?.receita_dia_semana} 
+      colors={colors} 
+    />
+  </Box>
+</Box>
+
         <Box
           gridColumn="span 4"
           gridRow="span 2"
