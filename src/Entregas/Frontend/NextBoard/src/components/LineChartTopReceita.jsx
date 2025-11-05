@@ -10,7 +10,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';  // ✅ CORRIGIDO
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -70,12 +70,12 @@ const LineChartTopReceita = ({ data, colors }) => {
       },
       {
         label: 'Lucro PicMoney',
-        data: sortedData.map(item => item.lucro_picmoney),
+        data: sortedData.map(item => item.repasse_total), // ✅ CORREÇÃO AQUI: repasse_total
         borderColor: safeColors.lucro,
         backgroundColor: safeColors.lucro + '40',
         tension: 0.4,
         fill: true,
-        borderDash: [5, 5],
+        borderDash: [5, 5], // ✅ LINHA PONTILHADA
         pointBackgroundColor: safeColors.lucro,
         pointBorderColor: '#fff',
         pointBorderWidth: 2,

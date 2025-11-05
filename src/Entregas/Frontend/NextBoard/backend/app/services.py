@@ -54,9 +54,10 @@ def calcular_metricas_financeiras():
     SELECT 
         nome_estabelecimento,
         SUM(valor_cupom) as receita_total,
+        SUM(repasse_picmoney) as repasse_total,  
         COUNT(*) as total_transacoes,
         AVG(valor_cupom) as ticket_medio,
-        (SUM(repasse_picmoney) / SUM(valor_cupom)) * 100 as margem_percentual 
+        (SUM(repasse_picmoney) / SUM(valor_cupom)) * 100 as margem_percentual
     FROM transacoes
     WHERE nome_estabelecimento IS NOT NULL 
       AND nome_estabelecimento != ''
