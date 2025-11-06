@@ -1,36 +1,28 @@
 import { useEffect, useState, useRef } from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import Header from "../../components/Header";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import LineChartTopReceita from "../../components/LineChartTopReceita";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Header from "../../components/Header";
+import LineChartTopReceita from "../../components/LineChartTopReceita";
 import PieChartMargem from "../../components/PieChartMargem";
 import AreaChartTicketMedio from "../../components/AreaChartTicketMedio";
-import LineChartEvolucao from "../../components/LineChartEvolucao";
-import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
 import BarChartDiaSemana from "../../components/BarChartDiaSemana";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const DashboardCFO = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [dados, setDados] = useState(null);
-  const rootRef = useRef(null); // ref para capturar o DOM do dashboard
+  const rootRef = useRef(null);
 
-  // requisição para buscar os cálculos
+  // Requisição para buscar os cálculos do backend Flask
   useEffect(() => {
     fetch("http://127.0.0.1:5001/metricas_financeiras")
       .then((res) => res.json())
@@ -48,7 +40,7 @@ const DashboardCFO = () => {
     return `${valor.toFixed(1)}%`;
   };
 
-  // função que tira screenshot e baixa como PNG
+  // 🔹 Função que gera PDF do dashboard
   const handleDownload = async () => {
     if (!rootRef.current) {
       console.error("Elemento root não encontrado para captura.");
@@ -56,7 +48,6 @@ const DashboardCFO = () => {
     }
 
     try {
-      // aumenta scale para maior resolução da imagem
       const canvas = await html2canvas(rootRef.current, {
         scale: 2,
         useCORS: true,
@@ -65,23 +56,36 @@ const DashboardCFO = () => {
         windowHeight: document.documentElement.scrollHeight,
       });
 
-      // converte para blob e força download
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `dashboard-${Date.now()}.png`;
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          URL.revokeObjectURL(url);
-        } else {
-          console.error("Falha ao gerar blob do canvas");
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      let position = 0;
+
+      // Quebra em múltiplas páginas, se necessário
+      if (imgHeight <= pdfHeight) {
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      } else {
+        let heightLeft = imgHeight;
+        let y = 0;
+
+        while (heightLeft > 0) {
+          pdf.addImage(imgData, "PNG", 0, y, imgWidth, imgHeight);
+          heightLeft -= pdfHeight;
+          if (heightLeft > 0) {
+            pdf.addPage();
+            y = -pdfHeight * (pdf.internal.getNumberOfPages() - 1);
+          }
         }
-      }, "image/png");
+      }
+
+      pdf.save(`dashboardCFO-${Date.now()}.pdf`);
     } catch (error) {
-      console.error("Erro ao gerar screenshot:", error);
+      console.error("Erro ao gerar PDF:", error);
     }
   };
 
@@ -89,7 +93,7 @@ const DashboardCFO = () => {
     <Box m="20px" ref={rootRef}>
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" />
+        <Header title="DASHBOARD FINANCEIRO" />
 
         <Box>
           <Button
@@ -106,7 +110,7 @@ const DashboardCFO = () => {
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Baixar Relatório
+            Baixar Relatório (PDF)
           </Button>
         </Box>
       </Box>
@@ -131,7 +135,6 @@ const DashboardCFO = () => {
             title={formatarMoeda(dados?.receita_total_picmoney)}
             subtitle="Receita total"
             progress="0.50"
-            // increase="+21%"
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
@@ -139,6 +142,7 @@ const DashboardCFO = () => {
             }
           />
         </Box>
+
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[600]}
@@ -181,26 +185,6 @@ const DashboardCFO = () => {
           />
         </Box>
 
-        {/* <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[600]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius="20px"
-        >
-          <StatBox
-            title={formatarMoeda(dados?.receita_liquida)}
-            subtitle="Receita Líquida"
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box> */}
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[600]}
@@ -211,17 +195,18 @@ const DashboardCFO = () => {
         >
           <StatBox
             title={formatarMoeda(dados?.ticket_medio)}
-            subtitle="Ticket médio "
+            subtitle="Ticket médio"
             progress="0.80"
             increase="+45%"
             icon={
-              <ShoppingCartIcon sx={{ color: colors.yellowAccent[500], fontSize: "26px" }} />
+              <ShoppingCartIcon
+                sx={{ color: colors.yellowAccent[500], fontSize: "26px" }}
+              />
             }
           />
         </Box>
 
         {/* ROW 2 */}
-
         <Box
           gridColumn="span 8"
           gridRow="span 2"
@@ -235,114 +220,90 @@ const DashboardCFO = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
-                Ranking - Estabelecimentos com maior faturamento
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
+            <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
+              Ranking - Estabelecimentos com maior faturamento
+            </Typography>
           </Box>
 
           <Box height="250px" m="-10px 20px 0 20px">
             {dados?.top10_receita && dados.top10_receita.length > 0 ? (
-              <LineChartTopReceita
-                data={dados.top10_receita}
-                colors={colors}
-              />
+              <LineChartTopReceita data={dados.top10_receita} colors={colors} />
             ) : (
               <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                 <Typography color={colors.grey[300]}>
-                  {dados?.top10_receita ? 'Nenhum dado disponível' : 'Carregando dados...'}
+                  {dados?.top10_receita ? "Nenhum dado disponível" : "Carregando dados..."}
                 </Typography>
               </Box>
             )}
           </Box>
         </Box>
 
+        {/* COLUNA DIREITA */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[600]}
           overflow="auto"
           borderRadius="20px"
+          p="12px"
         >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            colors={colors.grey[100]}
-            p="15px"
+          <Typography
+            color={colors.grey[100]}
+            variant="h4"
+            fontWeight="600"
+            sx={{ mb: 1 }}
           >
-          </Box>
+            Valor médio por cupom
+          </Typography>
 
+          {dados && dados.valor_medio_por_tipo ? (
+            Object.entries(dados.valor_medio_por_tipo).map(([tipo, valor], i) => (
+              <Box
+                key={`${tipo}-${i}`}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                p="8px 15px"
+                sx={{
+                  borderBottom: `1px solid ${colors.primary[400]}`,
+                  mb: "8px",
+                }}
+              >
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {tipo}
+                </Typography>
 
-
-          <Box display="flex" flexDirection="column" width="100%">
-            <Typography
-              color={colors.grey[100]}
-              variant="h4"
-              fontWeight="600"
-              sx={{ mb: 1, p: "12px" }}
-            >
-              Valor médio por cupom
-            </Typography>
-
-            {dados && dados.valor_medio_por_tipo ? (
-              Object.entries(dados.valor_medio_por_tipo).map(([tipo, valor], i) => (
                 <Box
-                  key={`${tipo}-${i}`}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  width="100%"
-                  p="8px 15px"
                   sx={{
-                    borderBottom: `1px solid ${colors.primary[400]}`,
-                    mb: "8px"
+                    backgroundColor: colors.greenAccent[500],
+                    p: "8px 16px",
+                    borderRadius: "4px",
+                    color: colors.primary[900],
+                    fontWeight: "bold",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minWidth: "120px",
                   }}
                 >
-                  <Typography
-                    color={colors.greenAccent[500]}
-                    variant="h4"
-                    fontWeight="600"
-                  >
-                    {tipo}
+                  <Typography variant="h5" fontWeight="bold">
+                    {formatarMoeda(valor)}
                   </Typography>
-
-                  <Box
-                    sx={{
-                      backgroundColor: colors.greenAccent[500],
-                      p: "8px 16px",
-                      borderRadius: "4px",
-                      color: colors.primary[900],
-                      fontWeight: "bold",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      minWidth: "120px",
-                    }}
-                  >
-                    <Typography variant="h5" fontWeight="bold">
-                      {formatarMoeda(valor)}
-                    </Typography>
-                  </Box>
                 </Box>
-              ))
-            ) : (
-              <Typography color={colors.grey[300]} p="20px">
-                Carregando dados...
-              </Typography>
-            )}
-          </Box>
+              </Box>
+            ))
+          ) : (
+            <Typography color={colors.grey[300]} p="20px">
+              Carregando dados...
+            </Typography>
+          )}
         </Box>
-        {/* ROW 3 */}
 
+        {/* ROW 3 */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -371,10 +332,7 @@ const DashboardCFO = () => {
             Receita por Dia da Semana
           </Typography>
           <Box height="200px" mt="35px" p="0 15px">
-            <BarChartDiaSemana
-              data={dados?.receita_dia_semana}
-              colors={colors}
-            />
+            <BarChartDiaSemana data={dados?.receita_dia_semana} colors={colors} />
           </Box>
         </Box>
 
@@ -393,10 +351,7 @@ const DashboardCFO = () => {
             Ticket Médio por Categoria
           </Typography>
           <Box height="180px" p="0 10px">
-            <AreaChartTicketMedio
-              data={dados?.ticket_medio_tipo_loja}
-              colors={colors}
-            />
+            <AreaChartTicketMedio data={dados?.ticket_medio_tipo_loja} colors={colors} />
           </Box>
         </Box>
       </Box>

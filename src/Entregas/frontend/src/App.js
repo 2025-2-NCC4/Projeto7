@@ -27,17 +27,16 @@ import { doc, getDoc } from "firebase/firestore";
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [user, setUser] = useState(null);
-  const [userRole, setUserRole] = useState(null); // 'ceo' ou 'cfo'
+  const [userRole, setUserRole] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
+  // 🔐 Verificação de login e cargo
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        
-        // Buscar o cargo do usuário no Firestore
         try {
           const userDoc = await getDoc(doc(db, "users", currentUser.uid));
           if (userDoc.exists()) {
@@ -56,7 +55,6 @@ function App() {
       }
       setLoadingUser(false);
     });
-    
     return () => unsubscribe();
   }, []);
 
@@ -67,52 +65,58 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {/* Estilos inline diretamente no App.js */}
+        {/* Estilos de layout fixo */}
         <style>{`
           .app {
             display: flex;
-            height: 100vh; /* altura total da tela */
+            height: 100vh;
             overflow: hidden;
           }
-
           .content {
-            flex: 1; /* ocupa todo espaço disponível */
+            flex: 1;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* scroll apenas no conteúdo */
-            margin-left: 250px; /* largura do sidebar expandido */
+            overflow-y: auto;
             transition: margin-left 0.3s ease;
+            margin-left: 250px;
           }
-
           .content.collapsed {
-            margin-left: 80px; /* largura do sidebar colapsado */
+            margin-left: 80px;
           }
         `}</style>
 
         <div className="app">
-          {user && <Sidebar isCollapsed={!isSidebar} setIsCollapsed={setIsSidebar} />}
-          <main className={`content ${!isSidebar ? 'collapsed' : ''}`}>
-            {user && <Topbar setIsSidebar={setIsSidebar} />}
+          {user && (
+            <Sidebar
+              isCollapsed={isCollapsed}
+              setIsCollapsed={setIsCollapsed}
+            />
+          )}
+          <main className={`content ${isCollapsed ? "collapsed" : ""}`}>
+            {user && <Topbar setIsSidebar={setIsCollapsed} />}
             <Routes>
               {/* Rotas Públicas */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
 
-              {/* Rota Principal - Redireciona baseado no cargo */}
-          <Route path="/" element={
-          <PrivateRoute>
-              {userRole === 'ceo' ? (
-            <DashboardCEO />
-                ) : userRole === 'cfo' ? (
-                <DashboardCFO />
-                ) : (
-      <div>Carregando ou cargo não reconhecido...</div>
-    )}
-  </PrivateRoute>
-} />
-              {/* Rotas Privadas */}
-              <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+              {/* Rota inicial redirecionando pelo cargo */}
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    {userRole === "ceo" ? (
+                      <DashboardCEO />
+                    ) : userRole === "cfo" ? (
+                      <DashboardCFO />
+                    ) : (
+                      <div>Carregando...</div>
+                    )}
+                  </PrivateRoute>
+                }
+              />
+
+              {/* Rotas privadas gerais */}
               <Route path="/team" element={<PrivateRoute><Team /></PrivateRoute>} />
               <Route path="/contacts" element={<PrivateRoute><Contacts /></PrivateRoute>} />
               <Route path="/invoices" element={<PrivateRoute><Invoices /></PrivateRoute>} />
@@ -125,9 +129,8 @@ function App() {
               <Route path="/geography" element={<PrivateRoute><Geography /></PrivateRoute>} />
               <Route path="/tela-ceo" element={<PrivateRoute><DashboardCEO /></PrivateRoute>} />
               <Route path="/tela-cfo" element={<PrivateRoute><DashboardCFO /></PrivateRoute>} />
-              
 
-              {/* Redirecionamento default */}
+              {/* Fallback */}
               <Route path="*" element={user ? <Dashboard /> : <Login />} />
             </Routes>
           </main>

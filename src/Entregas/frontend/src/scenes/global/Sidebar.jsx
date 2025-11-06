@@ -9,10 +9,6 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 import { auth, db } from "../auth/firebase";
@@ -70,7 +66,9 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
         top: 0,
         left: 0,
         bottom: 0,
+        transition: "width 0.3s ease",
         width: isCollapsed ? "80px" : "250px",
+        zIndex: 100,
         "& .pro-sidebar-inner": {
           background: `${colors.primary[700]} !important`,
           height: "100%",
@@ -83,23 +81,31 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
+          {/* Cabeçalho */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
+            icon={<MenuOutlinedIcon />}
+            style={{
+              margin: "10px 0 20px 0",
+              color: colors.grey[100],
+              cursor: "pointer",
+            }}
           >
             {!isCollapsed && (
-              <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                ml="15px"
+              >
                 <Typography variant="h3" color={colors.yellowAccent[500]}>
                   NEXTBOARD
                 </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon sx={{ color: colors.grey[100] }} />
-                </IconButton>
               </Box>
             )}
           </MenuItem>
 
+          {/* Perfil */}
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
@@ -116,7 +122,12 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
                 />
               </Box>
               <Box textAlign="center">
-                <Typography variant="h2" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0" }}>
+                <Typography
+                  variant="h2"
+                  color={colors.grey[100]}
+                  fontWeight="bold"
+                  sx={{ m: "10px 0 0 0" }}
+                >
                   {userName}
                 </Typography>
                 <Typography variant="h5" color={colors.yellowAccent[500]}>
@@ -126,17 +137,15 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
             </Box>
           )}
 
+          {/* Itens do menu */}
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item title="Dashboard" to="/" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Typography variant="h6" color={colors.yellowAccent[500]} sx={{ m: "15px 0 5px 20px" }}>Geral</Typography>
+            <Typography variant="h6" color={colors.yellowAccent[500]} sx={{ m: "15px 0 5px 20px" }}>
+              Geral
+            </Typography>
             <Item title="Perfil" to="/form" icon={<PersonOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Calendário" to="/calendar" icon={<CalendarTodayOutlinedIcon />} selected={selected} setSelected={setSelected} />
             <Item title="Perguntas Frequentes" to="/faq" icon={<HelpOutlineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            {/* <Typography variant="h6" color={colors.yellowAccent[500]} sx={{ m: "15px 0 5px 20px" }}>Gráficos</Typography>
-            <Item title="Gráfico de Barras" to="/bar" icon={<BarChartOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Item title="Gráfico de Pizza" to="/pie" icon={<PieChartOutlineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Item title="Gráfico de Linhas" to="/line" icon={<TimelineOutlinedIcon />} selected={selected} setSelected={setSelected} />
-            <Item title="Gráfico de Área" to="/geography" icon={<MapOutlinedIcon />} selected={selected} setSelected={setSelected} /> */}
           </Box>
         </Menu>
       </ProSidebar>
