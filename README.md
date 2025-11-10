@@ -57,7 +57,7 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 
 ### 🔧 1. Backend (Flask)
 #### -Acesse a pasta do backend
-cd src -> cd Entregas -> cd backend
+cd src/Entregas/backend
 
 #### -Instale as dependências Python
 pip install -r requirements.txt
@@ -67,7 +67,7 @@ python run.py
 
 ### 🔧 2. Frontend (React)
 #### -Acesse a pasta do frontend
-cd src -> cd Entregas -> cd frontend
+cd src/Entregas/frontend
 
 #### -Instale as dependências JavaScript
 npm install
