@@ -33,6 +33,10 @@ Dashboard interativo para a plataforma PicMoney, desenvolvido para fornecer insi
     &emsp;&emsp;|-->Contabilidade e Finanças<br>
     &emsp;&emsp;|-->Engenharia de Software e Arquitetura de Sistemas<br>
     &emsp;&emsp;|-->Projeto Interdisciplinar: Ciência de Dados<br>
+  &emsp;|-->Banner_FECAP_CCOMP4_L3OT<br>
+  &emsp;|-->Documento - Projeto de Extensão - COM Empresa.docx<br>
+  &emsp;|-->Documento - Projeto de Extensão - COM Empresa.pdf<br>
+|-->imagens<br>
 |-->src<br>
   &emsp;|-->Entregas<br>
     &emsp;&emsp;|-->backend<br>
