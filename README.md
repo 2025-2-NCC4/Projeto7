@@ -34,8 +34,9 @@ Dashboard interativo para a plataforma PicMoney, desenvolvido para fornecer insi
     &emsp;&emsp;|-->Engenharia de Software e Arquitetura de Sistemas<br>
     &emsp;&emsp;|-->Projeto Interdisciplinar: Ciência de Dados<br>
 |-->src<br>
-    &emsp;&emsp;|-->Backend<br>
-    &emsp;&emsp;|-->Frontend<br>
+  &emsp;|-->Entregas<br>
+    &emsp;&emsp;|-->backend<br>
+    &emsp;&emsp;|-->frontend<br>
 |readme.md<br>
 
 <b>documentos</b>: Toda a documentação estará nesta pasta.
