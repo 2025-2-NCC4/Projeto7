@@ -56,22 +56,22 @@ Para abrir este projeto você necessita das seguintes ferramentas:
 ### Como executar o projeto
 
 #### 1. Backend (Flask)
-# Acesse a pasta do backend
+#### Acesse a pasta do backend
 cd src -> cd Entregas -> cd backend
 
-# Instale as dependências Python
+#### Instale as dependências Python
 pip install -r requirements.txt
 
-# Execute o servidor Flask
+#### Execute o servidor Flask
 python run.py
 
-# Acesse a pasta do frontend
+#### Acesse a pasta do frontend
 cd src -> cd Entregas -> cd frontend
 
-# Instale as dependências JavaScript
+#### Instale as dependências JavaScript
 npm install
 
-# Execute a aplicação React
+#### Execute a aplicação React
 npm start
 
 ## 📋 Licença/License
